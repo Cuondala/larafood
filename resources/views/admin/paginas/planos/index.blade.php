@@ -1,0 +1,75 @@
+@extends('adminlte::page')
+
+@section('title', 'planos')
+
+@section('content_header')
+
+    <h1>Listagem</h1>
+@endsection
+
+@section('content')
+<div class="container row">
+    <div class="col-md-6">
+        <a href="#" class="btn btn-success " data-toggle="modal" data-target="#create">Novo Plano</a>
+    </div>
+</div>
+
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="card col-md-12">
+            <div class="card-header ">
+                <h3 class="card-title">Planos</h3>
+                <form action="{{ route('planos.filtro') }}" class="form-inline justify-content-end" method="post">
+                    @csrf
+                    <input type="search" name="filtro" id="" class="form-control col-md-3" placeholder="Pesquisar">
+                    <button type="submit" class="btn btn-outline-dark">Pesquisar</button>
+                </form>
+            </div>
+
+            <div class="card-body">
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nª</th>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th width="90"> Açcões</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach ($planos as $plano)
+                            <tr>
+                                <td>{{ $plano->id }}</td>
+                                <td>{{ $plano->nomePlano }}</td>
+                                <td>{{ number_format($plano->preco, 2,',', '.') }}</td>
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#show{{ $plano->id }}"><i class="fas fa-eye " Style="color: green"></i></a>
+                                    <a href="#" data-toggle="modal" data-target="#edit{{ $plano->id }}"><i class="fas fa-pen " ></i></a>
+                                    <a href="#" data-toggle="modal" data-target="#destroy{{ $plano->id }}"><i class="fas fa-trash" Style="color: red"></i></a>
+                                    <a href="{{ route('detalhes.index',$plano->id) }}" class="btn btn-outline-info">Detalhes</a>
+                                </td>
+                            </tr>
+                            @include('admin.paginas.planos.modal.show')
+                            @include('admin.paginas.planos.modal.edit')
+                            @include('admin.paginas.planos.modal.destroy')
+
+                        @endforeach
+                    </tbody>
+                </table>
+                @include('admin.paginas.planos.modal.create')
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@if(isset($filtros))
+    {{ $planos->appends($filtros)->links() }}
+@else
+    {{ $planos->links() }}
+@endif
+
+@endsection
