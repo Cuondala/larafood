@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissaoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DetalheController;
 use App\Http\Controllers\PerfilController;
@@ -51,6 +52,15 @@ Route::group(['prefix' => 'admin'],function () {
             Route::post('/perfil/store', 'store')->name('perfis.store');
             Route::put('/perfil/{id}/update', 'update')->name('perfis.update');
             Route::delete('/perfil/{id}/destroy', 'destroy')->name('perfis.destroy');
+        }
+    );
+
+    Route::controller(PermissaoController::class)->group(
+        function () {
+            Route::get('/permissao/index', 'index')->name('permissoes.index');
+            Route::post('/permissao/store', 'store')->name('permissoes.store');
+            Route::put('/permissoes/{id}/update', 'update')->name('permissoes.update');
+            Route::delete('/permissoes/{id}/destroy', 'destroy')->name('permissoes.destroy');
         }
     );
 
